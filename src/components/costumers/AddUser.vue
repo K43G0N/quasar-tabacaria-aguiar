@@ -58,6 +58,7 @@
       <div>
         <q-btn label="Cadastrar" type="submit" color="primary" />
         <q-btn
+          @click="sair"
           label="Sair"
           type="reset"
           color="primary"
@@ -73,9 +74,6 @@
 <script>
 import { defineComponent } from "vue"
 import db from "src/boot/firebase"
-import { ref } from 'vue'
-import { useQuasar } from 'quasar'
-import { useRoute } from 'vue-router'
 import { v4 as uuidv4 } from 'uuid';
 
 export default defineComponent({
@@ -146,11 +144,18 @@ export default defineComponent({
     },
 
     upload(result) {
+      var t = this
       let ref = db.storage().ref().child(this.photoID)
       ref.putString(result, "data_url").then(function (snapshot) {
-        console.log('upload_finish')
+        snapshot.ref.getDownloadURL().then((url) => {
+          t.photoID = url
+        })
       })
     },
+
+    sair(){
+      this.$router.go('/clientes')
+    }
 
 	},
 

@@ -9,8 +9,8 @@
     >
       <q-item-section side>
         <q-avatar rounded size="48px">
-          <img src="https://cdn.quasar.dev/img/avatar.png" />
-          <q-badge floating color="teal">new</q-badge>
+          <img :src="costumer.photo_id" />
+          <!-- <q-badge floating color="teal">new</q-badge> -->
         </q-avatar>
       </q-item-section>
       <q-item-section>
@@ -62,10 +62,11 @@ export default {
       .onSnapshot((doc) => {
         this.costumersList = []
         doc.forEach((doc) => {
-          const { nome } = doc.data()
+          const { nome,photo_id } = doc.data()
           this.costumersList.push({
             id: doc.id,
             nome: nome,
+            photo_id: photo_id
           })
         })
       })
