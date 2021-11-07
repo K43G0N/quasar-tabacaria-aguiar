@@ -61,19 +61,7 @@ export default {
   },
 
   mounted() {
-    db.firestore()
-      .collection("costumers")
-      .onSnapshot((doc) => {
-        this.costumersList = [];
-        doc.forEach((doc) => {
-          const { nome, photo_id } = doc.data();
-          this.costumersList.push({
-            id: doc.id,
-            nome: nome,
-            photo_id: photo_id,
-          });
-        });
-      });
+    
   },
 
   methods: {

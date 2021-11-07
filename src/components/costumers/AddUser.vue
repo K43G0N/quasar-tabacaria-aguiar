@@ -108,7 +108,6 @@ export default defineComponent({
       	nome: this.name,
 				photo_id: this.photoID
       }).then(() => {
-				//this.$router.replace('/clientes')
 				this.$router.go('/clientes')
       }).catch((error) => {
       	console.error('onsubmit_error')

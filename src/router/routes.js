@@ -20,7 +20,8 @@ const routes = [
     path: '/produtos',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Products.vue') }
+      { path: '', component: () => import('pages/Products.vue') },
+      { path: 'novo', component: () => import('src/components/products/AddProduct.vue') }
     ]
   },
 
@@ -29,6 +30,14 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Sales.vue') }
+    ]
+  },
+
+  {
+    path: '/estoque',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Inventory.vue') }
     ]
   },
 
