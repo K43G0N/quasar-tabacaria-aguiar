@@ -1,0 +1,17 @@
+#PESQUISANDO DATAS DENTRO DE UM ARRAY
+methods: {
+    parseData(){
+      var date = moment(this.dateToSearch).format('DD/MM/YYYY');
+      if (new Date(this.dateToSearch) instanceof Date){
+        let result = _.find(this.checkoutsList, function(o) { return o.uuid == date;});
+        if ()
+      }
+    }
+  },
+
+#ADICIONANDO APENAS UNICOS NO ARRAY
+let x = new Set()
+x.add(product)
+console.log(Array.from(x))
+
+#ADICIONANDO NO FIRESTORE

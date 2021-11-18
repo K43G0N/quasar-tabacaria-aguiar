@@ -1,69 +1,70 @@
 <template>
-  <p class="text-h6 text-center">NOVO PRODUTO</p>
-
-  <div class="q-pa-md" style="max-width: 400px; margin: 0 auto">
-    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-      <div class="row">
-        <div class="col-12 text-center q-gutter-sm">
-          <q-btn
-            @Click="
-              uploadShow = true;
-              cameraShow = false;
-            "
-            color="primary"
-            text-color="white"
-            glossy
-            unelevated
-            icon="upload"
-            label="ENVIAR FOTO"
-          />
-          <q-btn
-            @Click="
-              cameraShow = true;
-              uploadShow = false;
-            "
-            color="primary"
-            text-color="white"
-            glossy
-            unelevated
-            icon="camera_enhance"
-            label="TIRAR FOTO"
-          />
-          <Camera v-if="cameraShow" />
-          <FileUpload v-if="uploadShow" @set-file="setFile" />
+  <div>
+    <p class="text-h6 text-center">NOVO PRODUTO</p>
+    <div class="q-pa-md" style="max-width: 400px; margin: 0 auto">
+      <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+        <div class="row">
+          <div class="col-12 text-center q-gutter-sm">
+            <q-btn
+              @Click="
+                uploadShow = true;
+                cameraShow = false;
+              "
+              color="primary"
+              text-color="white"
+              glossy
+              unelevated
+              icon="upload"
+              label="ENVIAR FOTO"
+            />
+            <q-btn
+              @Click="
+                cameraShow = true;
+                uploadShow = false;
+              "
+              color="primary"
+              text-color="white"
+              glossy
+              unelevated
+              icon="camera_enhance"
+              label="TIRAR FOTO"
+            />
+            <Camera v-if="cameraShow" />
+            <FileUpload v-if="uploadShow" @set-file="setFile" />
+          </div>
         </div>
-      </div>
-      <q-input
-        filled
-        v-model="name"
-        label="Nome do produto *"
-        lazy-rules
-        :rules="[
-          (val) => (val && val.length > 0) || 'digite o nome do produto',
-        ]"
-      />
-
-      <q-input
-        v-model.number="price"
-        type="number"
-        filled
-        style="max-width: 200px"
-        label="Preço"
-        :rules="[(val) => val > 0 || 'digite o preço']"
-      />
-
-      <div>
-        <q-btn label="Cadastrar" type="submit" color="primary" />
-        <q-btn
-          @click="sair"
-          label="Sair"
-          type="reset"
-          color="primary"
-          flat
-          class="q-ml-sm"
+        <q-input
+          filled
+          v-model="name"
+          label="Nome do produto *"
+          lazy-rules
+          :rules="[
+            (val) => (val && val.length > 0) || 'digite o nome do produto',
+          ]"
         />
-      </div>
-    </q-form>
+
+        <q-input
+          v-model.number="price"
+          type="number"
+          filled
+          style="max-width: 200px"
+          label="Preço"
+          :rules="[(val) => val > 0 || 'digite o preço']"
+        />
+
+        <div>
+          <q-btn label="Cadastrar" type="submit" color="primary" />
+          <q-btn
+            @click="sair"
+            label="Sair"
+            type="reset"
+            color="primary"
+            flat
+            class="q-ml-sm"
+          />
+        </div>
+      </q-form>
+    </div>
   </div>
 </template>
 

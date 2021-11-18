@@ -48,6 +48,14 @@ const routes = [
       { path: '', component: () => import('pages/Reports.vue') }
     ]
   },
+  
+  {
+     path: '/caixa',
+     component: () => import ('layouts/CheckoutLayout.vue'),
+     children: [
+	     { path: '', component: () => import ('pages/Checkout.vue') }
+     ]
+  },
 
   // Always leave this as last one,
   // but you can also remove it

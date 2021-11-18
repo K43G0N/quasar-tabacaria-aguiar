@@ -12,6 +12,7 @@ module.exports = configure(function (ctx) {
   return {
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
+    
 
     // https://quasar.dev/quasar-cli/prefetch-feature
     // preFetch: true,
@@ -20,7 +21,7 @@ module.exports = configure(function (ctx) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
-      'axios','firebase'
+      'axios','firebase','setup'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

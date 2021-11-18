@@ -27,24 +27,37 @@
         </template>
       </q-field>
     </q-form>
-
-    <ListProducts></ListProducts>
+    <InventoryBucket
+      v-if="bucket.length > 0"
+      :bucket="bucket"
+      @reset-bucket-to-product="resetBucketToProduct"
+    />
+    <ListProducts
+      :productsList="productsList"
+      @add-to-bucket="addToBucket"
+    ></ListProducts>
   </q-page>
 </template>
 
 <script>
+import db from "src/boot/firebase";
 import ListProducts from "src/components/inventory/ListProducts";
+import InventoryBucket from "src/components/inventory/InventoryBucket";
 import { defineComponent } from "vue";
+import _ from "lodash";
 
 export default defineComponent({
   name: "Inventory",
-  components: { ListProducts },
+  components: { ListProducts, InventoryBucket },
 
   data() {
     return {
+      productsList: [],
       dense: false,
       text: "",
       search: "",
+      tempBucket: new Set(),
+      bucket: [],
     };
   },
 
@@ -54,19 +67,36 @@ export default defineComponent({
       .onSnapshot((doc) => {
         this.productsList = [];
         doc.forEach((doc) => {
-          const { nome, photo_id } = doc.data();
+          const { name, img, price } = doc.data();
           this.productsList.push({
             id: doc.id,
-            nome: nome,
-            photo_id: photo_id,
+            name: name,
+            img: img,
+            price: price,
           });
         });
       });
   },
 
   methods: {
-    onSelectFile() {
-      alert("ffffff");
+
+    //onSelectFile() {},
+
+    addToBucket(product) {
+      if (this.tempBucket.has(product) == false) {
+        product["units"] = 1;
+      } else {
+        product["units"] += 1;
+      }
+      this.tempBucket.add(product);
+      this.bucket = Array.from(this.tempBucket);
+    },
+
+    resetBucketToProduct(product) {
+      if (this.tempBucket.has(product) == true) {
+        this.tempBucket.delete(product);
+        this.bucket = Array.from(this.tempBucket);
+      }
     },
   },
 });
