@@ -15,3 +15,20 @@ x.add(product)
 console.log(Array.from(x))
 
 #ADICIONANDO NO FIRESTORE
+ methods: {
+    registerInInventory(product) {
+      db.firestore()
+        .collection("inventory")
+        .doc()
+        .set({
+          product_id: product.id,
+          units: product.units,
+        })
+        .then(() => {
+            this.$emit("resetBucketToProduct", product)
+        })
+        .catch((error) => {});
+    },
+  },
+
+#emit

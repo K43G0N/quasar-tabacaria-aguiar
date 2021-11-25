@@ -33,7 +33,7 @@
       </q-card-section>
       <q-separator />
       <q-card-actions vertical>
-        <q-btn flat to="/produtos">Abrir</q-btn>
+        <q-btn flat to="/vendas">Abrir</q-btn>
       </q-card-actions>
     </q-card>
 

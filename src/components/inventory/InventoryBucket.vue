@@ -48,6 +48,7 @@ export default {
         .doc()
         .set({
           product_id: product.id,
+          name:product.name,
           units: product.units,
         })
         .then(() => {
@@ -58,6 +59,3 @@ export default {
   },
 };
 </script>
-
-
-

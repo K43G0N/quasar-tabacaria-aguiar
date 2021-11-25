@@ -1,32 +1,24 @@
 <template>
   <q-page padding>
-    <!-- <ListProducts v-if="!addProductShow" @add-product="addProduct" /> -->
-    <!-- <AddProduct v-if="addProductShow" /> -->
-    <!-- <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md"> -->
-
-    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-      <q-field>
-        <template v-slot:prepend> </template>
-
-        <template v-slot:control>
-          <!-- <div class="self-center full-width no-outline" tabindex="0">{{text}}</div> -->
-          <q-input
-            v-model="search"
-            debounce="500"
-            filled
-            :loading="true"
-            placeholder="Digite o nome do produto"
-            hint=""
-            style="min-width: 100%; font-size: 25px"
-            @input="onSelectFile"
-          >
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </template>
-      </q-field>
-    </q-form>
+    <q-field>
+      <template v-slot:prepend> </template>
+      <template v-slot:control>
+        <q-input
+          v-model="search"
+          debounce="500"
+          filled
+          :loading="false"
+          placeholder="Digite o nome do produto"
+          hint=""
+          style="min-width: 100%; font-size: 25px"
+          @update:model-value="searchProduct"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
+    </q-field>
     <InventoryBucket
       v-if="bucket.length > 0"
       :bucket="bucket"
@@ -53,8 +45,7 @@ export default defineComponent({
   data() {
     return {
       productsList: [],
-      dense: false,
-      text: "",
+      productsListFull: [],
       search: "",
       tempBucket: new Set(),
       bucket: [],
@@ -74,13 +65,39 @@ export default defineComponent({
             img: img,
             price: price,
           });
+          this.productsListFull = this.productsList;
         });
       });
   },
 
   methods: {
-
-    //onSelectFile() {},
+    searchProduct() {
+      db.firestore()
+        .collection("products")
+        //.where('name', 'array-contains', 'fffffff')
+        //.where("name", "==", this.search)
+        .get()
+        .then((querySnapshot) => {
+          this.productsList = [];
+          querySnapshot.forEach((doc) => {
+            const { name, price, img } = doc.data();
+            if (name.includes(this.search)) {
+              this.productsList.push({
+                id: doc.id,
+                name: name,
+                price: price,
+                img: img,
+              });
+            }
+          });
+          if (this.productsList.length == 0) {
+            this.productsList = this.productsListFull;
+          }
+        })
+        .catch((error) => {
+          this.productsList = this.productsListFull;
+        });
+    },
 
     addToBucket(product) {
       if (this.tempBucket.has(product) == false) {
