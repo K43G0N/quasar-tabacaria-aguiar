@@ -16,9 +16,9 @@
       </q-item-section>
 
       <q-item-section side>
-        <q-item-label>{{ sale.name }}</q-item-label>
-        <q-item-label caption>total: R${{ sale.total }}</q-item-label>
-        <q-item-label caption>data: {{ sale.data }}</q-item-label>
+        <q-item-label>{{ sale['name'] }}</q-item-label>
+        <q-item-label caption>total: R${{ sale['total'] }}</q-item-label>
+        <q-item-label caption>data: {{ sale['data'] }}</q-item-label>
       </q-item-section>
 
       <q-item-section>

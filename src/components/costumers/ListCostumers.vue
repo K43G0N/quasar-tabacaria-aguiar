@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <q-page padding v-if="addUserShow"></q-page>
-    <q-page padding v-if="!addUserShow">
+    <q-page padding>
       <q-item
         v-for="(costumer, index) in costumersList"
         :key="index"
@@ -21,7 +19,11 @@
 
         <q-item-section side>
           <div class="q-pa-md q-gutter-sm">
-            <q-btn color="primary" icon="edit" label="Alterar" />
+            <q-btn color="primary" 
+                   icon="edit" 
+                   label="Alterar"
+                   @click="() => editCostumer()" 
+            />
             <q-btn
               @click="() => deleteCostumer(costumer)"
               :dense="$q.screen.xs"
@@ -44,21 +46,17 @@
         <q-btn @click="() => addCostumer()" fab icon="add" color="blue" />
       </q-page-sticky>
     </q-page>
-  </div>
 </template>
 
 <script>
 import db from "src/boot/firebase";
-import AddUser from "src/components/costumers/AddUser";
 
 export default {
   name: "ListCostumers",
-  components: { AddUser },
-
+  
   data() {
     return {
-      costumersList: [],
-      addUserShow: false,
+      costumersList: []
     };
   },
 
@@ -95,9 +93,11 @@ export default {
     addCostumer() {
       this.$emit("addCostumer");
     },
+
+    editCostumer(){
+      this.$emit("editCostumer");
+    }
   },
+  
 };
 </script>
-
-
-

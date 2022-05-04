@@ -19,15 +19,8 @@
         </q-input>
       </template>
     </q-field>
-    <InventoryBucket
-      v-if="bucket.length > 0"
-      :bucket="bucket"
-      @reset-bucket-to-product="resetBucketToProduct"
-    />
-    <ListProducts
-      :productsList="productsList"
-      @add-to-bucket="addToBucket"
-    ></ListProducts>
+    <InventoryBucket v-if="bucket.size > 0" :bucket="Array.from(bucket)" @reset-bucket-to-product="resetBucketToProduct"/>
+    <ListProducts :productsList="products" @add-to-bucket="addToBucket" @remove-from-bucket="removeFromBucket"/>
   </q-page>
 </template>
 
@@ -44,11 +37,9 @@ export default defineComponent({
 
   data() {
     return {
-      productsList: [],
-      productsListFull: [],
+      products: [],
       search: "",
-      tempBucket: new Set(),
-      bucket: [],
+      bucket: new Set()
     };
   },
 
@@ -56,65 +47,83 @@ export default defineComponent({
     db.firestore()
       .collection("products")
       .onSnapshot((doc) => {
-        this.productsList = [];
+        this.products = [];
         doc.forEach((doc) => {
           const { name, img, price } = doc.data();
-          this.productsList.push({
-            id: doc.id,
-            name: name,
-            img: img,
-            price: price,
-          });
-          this.productsListFull = this.productsList;
+          let ref = db.storage().ref().child(img)
+          ref.getDownloadURL().then((url) => {
+            this.products.push({
+              id: doc.id,
+              nome: name,
+              img: url,
+              price: price
+            });
+          })
         });
       });
   },
 
+  computed: {
+  },
+
   methods: {
+    
     searchProduct() {
-      db.firestore()
-        .collection("products")
-        //.where('name', 'array-contains', 'fffffff')
-        //.where("name", "==", this.search)
-        .get()
-        .then((querySnapshot) => {
-          this.productsList = [];
-          querySnapshot.forEach((doc) => {
-            const { name, price, img } = doc.data();
-            if (name.includes(this.search)) {
-              this.productsList.push({
+      let ref = null
+      let t = this
+      t.products = [];
+      db.firestore().collection("products").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const { name, price, img } = doc.data();
+          if (name.includes(t.search)) {
+            ref = db.storage().ref().child(img)
+            ref.getDownloadURL().then((url) => {
+              t.products.push({
                 id: doc.id,
-                name: name,
-                price: price,
-                img: img,
+                nome: name,
+                img: url,
+                price: price
               });
-            }
-          });
-          if (this.productsList.length == 0) {
-            this.productsList = this.productsListFull;
+            })
           }
-        })
-        .catch((error) => {
-          this.productsList = this.productsListFull;
         });
+      }).catch((error) => {
+        console.log(error)
+      });
     },
 
     addToBucket(product) {
-      if (this.tempBucket.has(product) == false) {
-        product["units"] = 1;
-      } else {
-        product["units"] += 1;
+      let trigger = false
+      for (let bucket of this.bucket) {
+        if (product.id == bucket.id){
+          trigger = true
+          bucket.units += 1
+          break
+        }
       }
-      this.tempBucket.add(product);
-      this.bucket = Array.from(this.tempBucket);
+      if (trigger == false){
+        this.bucket.add(product);
+        product['units'] = 1;
+      }
+    },
+
+    removeFromBucket(product){
+      for (let bucket of this.bucket) {
+        if (product.id == bucket.id){
+          bucket.units -= 1;
+          if (bucket.units == 0){
+            this.bucket.delete(bucket);
+          }
+        }
+      }
     },
 
     resetBucketToProduct(product) {
-      if (this.tempBucket.has(product) == true) {
-        this.tempBucket.delete(product);
-        this.bucket = Array.from(this.tempBucket);
+      if (this.bucket.has(product) == true) {
+        this.bucket.delete(product);
       }
     },
+    
   },
 });
 </script>

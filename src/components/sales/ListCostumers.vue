@@ -3,14 +3,14 @@
     <q-field>
       <template v-slot:control>
         <q-input
-          v-model="searchCostumer"
-          debounce="500"
+          v-model="search"
+          debounce="250"
           filled
           :loading="false"
-          placeholder="Digite o nome do cliente"
+          placeholder="Digite o Nome do Cliente"
           hint=""
           style="min-width: 100%; font-size: 25px"
-          @update:model-value="searchCostumer"
+          @update:model-value="findCostumer"
         >
           <template v-slot:append>
             <q-icon name="search" />
@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       costumersList: [],
-      searchCostumer: "",
+      search: "",
     };
   },
 
@@ -91,7 +91,28 @@ export default {
     
     changeShowProducts(value){
       this.$emit('changeShowProducts',value)
-    }
+    },
+
+    findCostumer() {
+      let t = this
+      t.costumersList = [];
+      db.firestore().collection("costumers").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const { nome,photo_id } = doc.data();
+          console.log(t.search)
+          if (nome.includes(t.search)) {
+            t.costumersList.push({
+              id: doc.id,
+              photo_id: photo_id,
+              nome: nome
+            });
+          }
+        });
+      }).catch((error) => {
+        console.log(error)
+      });
+    },
+
   },
 };
 </script>

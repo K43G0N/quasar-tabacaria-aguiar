@@ -1,6 +1,7 @@
 import { store } from 'quasar/wrappers'
 import { createStore } from 'vuex'
 import carts from './store-carts' 
+import inventory from './store-inventory' 
 
 
 // import example from './module-example'

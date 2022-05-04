@@ -3,13 +3,13 @@
     <q-item v-for="(product, index) in bucket" :key="index" clickable v-ripple>
       <q-item-section side>
         <q-avatar rounded size="48px">
-          <img :src="product.img" />
+          <img :src="product['img']" />
           <!-- <q-badge floating color="teal">new</q-badge> -->
         </q-avatar>
       </q-item-section>
       <q-item-section>
-        <q-item-label>{{ product.name }}</q-item-label>
-        <q-item-label caption>{{ product.units }} Unidades</q-item-label>
+        <q-item-label>{{ product['nome'] }}</q-item-label>
+        <q-item-label caption>{{ product['units'] }} Unidades</q-item-label>
       </q-item-section>
 
       <q-item-section side>
@@ -23,7 +23,7 @@
         </div>
       </q-item-section>
     </q-item>
-    <q-separator color="blue" inset />
+    <q-separator color="blue" inset />    
   </div>
 </template>
 
@@ -48,14 +48,32 @@ export default {
         .doc()
         .set({
           product_id: product.id,
-          name:product.name,
+          name:product.nome,
           units: product.units,
         })
         .then(() => {
             this.$emit("resetBucketToProduct", product)
+            this.triggerPositive()
         })
-        .catch((error) => {});
+        .catch((error) => {
+          this.triggerNegative()
+        });
     },
+
+    triggerPositive () {
+      this.$q.notify({
+        type: 'positive',
+        message: `PRODUTOS ADICIONADO AO ESTOQUE COM SUCESSO!`
+      })
+    },
+
+    triggerNegative () {
+      this.$q.notify({
+        type: 'negative',
+        message: `ERRO AO ADICIONAR PRODUTO AO ESTOQUE`
+      })
+    },
+
   },
 };
 </script>

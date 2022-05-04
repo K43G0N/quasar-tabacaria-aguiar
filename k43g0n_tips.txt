@@ -1,3 +1,5 @@
+#COMPONENTE ESQUELETO  
+
 #PESQUISANDO DATAS DENTRO DE UM ARRAY
 methods: {
     parseData(){
@@ -31,4 +33,14 @@ console.log(Array.from(x))
     },
   },
 
+#calculando valor de uma proriedade dentro de um array of objects
+getSaleTotal(productsValue) {
+      this.saleTotal = productsValue.reduce(function (prev, cur) {
+        return prev + cur.price;
+      }, 0);
+    },
+
+
+
 #emit
+

@@ -10,7 +10,7 @@
         <q-avatar rounded size="48px"> </q-avatar>
       </q-item-section>
       <q-item-section>
-        <q-item-label>{{ product.nome }}</q-item-label>
+        <q-item-label>{{ product.name }}</q-item-label>
         <q-item-label caption>2 new messages</q-item-label>
       </q-item-section>
       <q-item-section side>
@@ -55,10 +55,12 @@ export default {
       .onSnapshot((doc) => {
         this.products = [];
         doc.forEach((doc) => {
-          const { nome } = doc.data();
+          const { name,img,price } = doc.data();
           this.products.push({
             id: doc.id,
-            nome: nome,
+            name: name,
+            img: img,
+            price: price
           });
         });
       });

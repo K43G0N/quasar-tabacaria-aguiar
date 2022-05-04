@@ -8,12 +8,12 @@
     >
       <q-item-section side>
         <q-avatar rounded size="48px">
-          <img :src="product.img" />
+          <img :src="product['img']" />
           <!-- <q-badge floating color="teal">new</q-badge> -->
         </q-avatar>
       </q-item-section>
       <q-item-section>
-        <q-item-label>{{ product.name }}</q-item-label>
+        <q-item-label>{{ product['nome'] }}</q-item-label>
         <q-item-label caption>0 Unidades</q-item-label>
       </q-item-section>
 
@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import db from "src/boot/firebase";
 
 export default {
   name: "ListCostumers",
@@ -51,15 +53,24 @@ export default {
   props: ["productsList"],
 
   data() {
-    return {};
+    return {
+      product:[]
+    };
   },
 
-  mounted() {},
+  mounted() {
+  },
 
   methods: {
+
     addToBucket(product) {
-       this.$emit("addToBucket",product);
+      this.$emit("addToBucket",product);
     },
+
+    removeFromBucket(product){
+      this.$emit("removeFromBucket",product);
+    }
+
     // deleteCostumer(costumer) {
     //   db.firestore()
     //     .collection("costumers")

@@ -45,7 +45,10 @@
 
         <q-input
           v-model.number="price"
-          type="number"
+          
+          mask="#.##"
+          fill-mask="0"
+          reverse-fill-mask
           filled
           style="max-width: 200px"
           label="Preço"
@@ -83,7 +86,7 @@ export default defineComponent({
   data() {
     return {
       name: "",
-      price: 0,
+      price: 0.0,
       file: "",
 
       cameraShow: false,

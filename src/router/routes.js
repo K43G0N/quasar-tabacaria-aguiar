@@ -12,7 +12,7 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Costumers.vue') },
-      { path: 'novo', component: () => import('src/components/costumers/AddUser.vue') }
+      { path: 'novo', component: () => import('src/components/costumers/AddUser.vue') },
     ]
   },
 

@@ -15,7 +15,10 @@
           TABACARIA AGUIAR
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+      <q-separator dark vertical />
+      <q-btn stretch flat to="/" label="Voltar" />
+      
+      <div>v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
