@@ -1,11 +1,12 @@
 .DS_Store
 .thumbs.db
 node_modules
-git_token
 
 # Quasar core related directories
 .quasar
 /dist
+
+git_token
 
 # Cordova related directories and files
 /src-cordova/node_modules

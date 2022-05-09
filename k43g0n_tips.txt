@@ -1,7 +1,6 @@
 #git Token
 confira arquivo git_token na raiz
 
-
 #COMPONENTE ESQUELETO  
 
 #PESQUISANDO DATAS DENTRO DE UM ARRAY
