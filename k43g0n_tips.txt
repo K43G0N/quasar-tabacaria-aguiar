@@ -1,8 +1,3 @@
-#git Token
-usuername = caeg0n
-password = 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
-
-
 #COMPONENTE ESQUELETO  
 
 #PESQUISANDO DATAS DENTRO DE UM ARRAY
