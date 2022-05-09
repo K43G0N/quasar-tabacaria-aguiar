@@ -1,5 +1,23 @@
 <template>
   <q-page padding>
+    <q-field>
+      <template v-slot:control>
+        <q-input
+          v-model="search"
+          debounce="250"
+          filled
+          :loading="false"
+          placeholder="Digite o Nome do Produto"
+          hint=""
+          style="min-width: 100%; font-size: 25px"
+          @update:model-value="findCostumer"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
+    </q-field>
     <q-item
       v-for="(product, index) in products"
       :key="index"

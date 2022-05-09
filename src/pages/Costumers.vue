@@ -10,7 +10,7 @@
   </q-page>
     
   <q-page padding v-if="editCostumerShow && !addUserShow">
-    <EditCostumer/>
+    <EditCostumer :editCostumerInfo="editCostumerInfo" />
     <q-footer elevated>
       <q-toolbar>
         <q-toolbar-title></q-toolbar-title>
@@ -43,6 +43,7 @@ export default {
       costumersList: [],
       addUserShow: false,
       editCostumerShow: false,
+      editCostumerInfo:{}
     };
   },
 
@@ -56,7 +57,8 @@ export default {
       this.editCostumerShow = false
     },
 
-    editCostumer() {
+    editCostumer(costumer) {
+      this.editCostumerInfo = costumer
       this.editCostumerShow = true
       this.addUserShow = false
     },

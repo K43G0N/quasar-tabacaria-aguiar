@@ -43,7 +43,7 @@
         label="Nome do cliente *"
         hint="Nome completo"
         lazy-rules
-        :rules="[(val) => (val && val.length > 0) || 'digite algum nome mané']"
+        :rules="[(val) => (val && val.length > 0) || 'digite algum nome']"
       />
 			<q-input
         filled
@@ -87,7 +87,6 @@ export default defineComponent({
       cameraFinish: false,
       imageCapture: null,
       track: null,
-
 			name:'',
 			nick:'',
 			useNick:false,
@@ -105,8 +104,10 @@ export default defineComponent({
 
 		onSubmit(){
       db.firestore().collection("costumers").doc().set({
-      	nome: this.name,
-				photo_id: this.photoID
+      	name: this.name,
+				nick: this.nick,
+        use_nick: this.useNick,
+        photo_id: this.photoID
       }).then(() => {
 				this.$router.go('/clientes')
       }).catch((error) => {

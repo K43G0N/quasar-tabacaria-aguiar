@@ -13,8 +13,13 @@
           </q-avatar>
         </q-item-section>
         <q-item-section>
-          <q-item-label>{{ costumer.nome }}</q-item-label>
-          <q-item-label caption>2 new messages</q-item-label>
+          
+          <q-item-label v-if="costumer.use_nick == true">{{ $filters.upper(costumer.nick) }}</q-item-label>
+          <q-item-label v-if="costumer.use_nick == false">{{ $filters.upper(costumer.name) }}</q-item-label>
+          
+          <q-item-label v-if="costumer.use_nick == true" caption>NOME: {{$filters.upper(costumer.name)}}</q-item-label>
+          <q-item-label v-if="costumer.use_nick == false" caption>APELIDO: {{$filters.upper(costumer.nick)}}</q-item-label>
+        
         </q-item-section>
 
         <q-item-section side>
@@ -22,7 +27,7 @@
             <q-btn color="primary" 
                    icon="edit" 
                    label="Alterar"
-                   @click="() => editCostumer()" 
+                   @click="() => editCostumer(costumer)" 
             />
             <q-btn
               @click="() => deleteCostumer(costumer)"
@@ -66,10 +71,12 @@ export default {
       .onSnapshot((doc) => {
         this.costumersList = [];
         doc.forEach((doc) => {
-          const { nome, photo_id } = doc.data();
+          const { name, photo_id,nick,use_nick } = doc.data();
           this.costumersList.push({
             id: doc.id,
-            nome: nome,
+            nick: nick,
+            name: name,
+            use_nick: use_nick,
             photo_id: photo_id,
           });
         });
@@ -91,11 +98,11 @@ export default {
     },
 
     addCostumer() {
-      this.$emit("addCostumer");
+      this.$emit('addCostumer');
     },
 
-    editCostumer(){
-      this.$emit("editCostumer");
+    editCostumer(costumer){
+      this.$emit('editCostumer',costumer);
     }
   },
   
