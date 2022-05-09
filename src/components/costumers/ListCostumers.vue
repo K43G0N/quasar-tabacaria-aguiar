@@ -30,7 +30,7 @@
                    @click="() => editCostumer(costumer)" 
             />
             <q-btn
-              @click="() => deleteCostumer(costumer)"
+              @click="() => checkDialog(costumer)"
               :dense="$q.screen.xs"
               no-caps
               label="Exluir"
@@ -50,18 +50,36 @@
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
         <q-btn @click="() => addCostumer()" fab icon="add" color="blue" />
       </q-page-sticky>
+
+      <q-dialog v-model="confirm" persistent>
+        <q-card>
+          <q-card-section class="row items-center">
+            <q-avatar icon="report_gmailerrorred" color="primary" text-color="white" />
+            <span class="q-ml-sm">Você está prestes a excluir esse cliente</span>
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Cancel" color="primary" v-close-popup />
+            <q-btn @click="() => deleteCostumer()" flat label="Excluir Permanentemente" color="negative" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
     </q-page>
+
 </template>
 
 <script>
-import db from "src/boot/firebase";
+import db from "src/boot/firebase"
 
 export default {
   name: "ListCostumers",
   
   data() {
     return {
-      costumersList: []
+      costumersList: [],
+      confirm: false,
+      selectedCostumer:{}
     };
   },
 
@@ -84,17 +102,19 @@ export default {
   },
 
   methods: {
-    deleteCostumer(costumer) {
-      db.firestore()
-        .collection("costumers")
-        .doc(costumer.id)
-        .delete()
-        .then(() => {
-          console.log("Document successfully deleted!");
-        })
-        .catch((error) => {
-          console.error("Error removing document: ", error);
-        });
+
+    checkDialog(costumer){
+      this.confirm = true
+      this.selectedCostumer = costumer
+    },
+
+    deleteCostumer() {
+      db.firestore().collection("costumers").doc(this.selectedCostumer.id).delete()
+      .then(() => {
+        console.log("Document successfully deleted!");
+      }).catch((error) => {
+        console.error("Error removing document: ", error);
+      });
     },
 
     addCostumer() {

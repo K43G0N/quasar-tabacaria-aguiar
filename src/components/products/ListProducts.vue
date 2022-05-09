@@ -59,7 +59,6 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 import db from "src/boot/firebase";
 import AddProduct from "src/components/products/AddProduct";
 

@@ -62,7 +62,6 @@ export default {
       this.editCostumerShow = true
       this.addUserShow = false
     },
-
   },
 
 }

@@ -160,11 +160,10 @@ export default defineComponent({
 
       sair(){
         this.$router.go('/clientes')
-      }
-  
-  },
-
+      },
+    },
 })
+
 </script>
 
 <style scoped>
