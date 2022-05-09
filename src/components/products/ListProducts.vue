@@ -20,6 +20,23 @@
         </q-item-section>
         <q-item-section side>
           <q-btn
+            @click="() => editProduct(product)"
+            :dense="$q.screen.xs"
+            no-caps
+            label="Alterar"
+            icon="edit"
+            color="blue"
+          >
+          
+          <!--
+            <q-popup-proxy transition-show="scale" transition-hide="scale">
+              <q-color v-model="colorFace" />
+            </q-popup-proxy>
+          -->
+          </q-btn>
+        </q-item-section>
+        <q-item-section side>
+          <q-btn
             @click="() => checkDialog(product)"
             :dense="$q.screen.xs"
             no-caps
@@ -27,6 +44,7 @@
             icon-right="close"
             color="red"
           >
+          
           <!--
             <q-popup-proxy transition-show="scale" transition-hide="scale">
               <q-color v-model="colorFace" />
@@ -126,6 +144,11 @@ export default {
     addProduct() {
       this.$emit("addProduct");
     },
+
+    editProduct(product){
+      this.$emit('editProduct',product);
+    }
+    
   },
 };
 </script>
