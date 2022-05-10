@@ -80,6 +80,45 @@
       </q-card-actions>
     </q-card>
 
+    <q-card class="my-card">
+      <q-card-section class="bg-primary text-white">
+        <div class="text-h6">DELIVERY</div>
+        <div class="text-subtitle2">5 entregadores</div>
+      </q-card-section>
+
+      <q-separator />
+
+      <q-card-actions align="right">
+        <q-btn flat to="/delivery">ABRIR</q-btn>
+      </q-card-actions>
+    </q-card>
+
+    <q-card class="my-card">
+      <q-card-section class="bg-primary text-white">
+        <div class="text-h6">PAGAMENTO</div>
+        <div class="text-subtitle2">em dia</div>
+      </q-card-section>
+
+      <q-separator />
+
+      <q-card-actions align="right">
+        <q-btn flat to="/pay">ABRIR</q-btn>
+      </q-card-actions>
+    </q-card>
+
+    <q-card class="my-card">
+      <q-card-section class="bg-primary text-white">
+        <div class="text-h6">CONFIG</div>
+        <div class="text-subtitle2">temas</div>
+      </q-card-section>
+
+      <q-separator />
+
+      <q-card-actions align="right">
+        <q-btn flat to="/setup">ABRIR</q-btn>
+      </q-card-actions>
+    </q-card>
+    
   </div>
 
 </template>

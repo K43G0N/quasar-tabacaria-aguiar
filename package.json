@@ -20,7 +20,9 @@
   },
   "devDependencies": {
     "@quasar/app": "^3.0.0",
-    "cypress": "^9.1.1"
+    "cypress": "^9.1.1",
+    "electron": "^18.2.0",
+    "electron-packager": "^15.2.0"
   },
   "browserslist": [
     "last 10 Chrome versions",
