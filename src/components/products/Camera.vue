@@ -34,81 +34,69 @@
 </template>
 
 <script>
-import { defineComponent } from "vue"
-//import db from "src/boot/firebase"
-//import { v4 as uuidv4 } from "uuid"
+import db from "src/boot/firebase";
+import { v4 as uuidv4 } from "uuid";
 
-export default defineComponent({
+export default {
   name: "Camera",
   props: {},
 
   data() {
     return {
-      //name: "",
-      //price: 0,
-      // enableCamera: false,
-      // cameraStart: false,
-      // cameraFinish: false,
-      // imageCapture: null,
-      // track: null,
-      // name: "",
-      // nick: "",
-      // useNick: false,
-      // photoID: null,
+      enableCamera: false,
+      cameraStart: false,
+      cameraFinish: false,
+      imageCapture: null,
+      track: null,
+      photoID: null,
     };
   },
 
   mounted() {
-    // if (navigator.mediaDevices.getUserMedia) {
-    //   this.enableCamera = true
-    // }
+    if (navigator.mediaDevices.getUserMedia) {
+      this.enableCamera = true
+    }
   },
 
-  methods: {},
+  methods: {
 
-  useCamera() {
-    //   navigator.mediaDevices
-    //     .getUserMedia({ video: true })
-    //     .then((mediaStream) => {
-    //       this.cameraStart = true;
-    //       this.$refs.videoplay.srcObject = mediaStream;
-    //       this.track = mediaStream.getVideoTracks()[0];
-    //       this.imageCapture = new ImageCapture(this.track)
-    //     })
-  },
+    useCamera() {
+      navigator.mediaDevices.getUserMedia({ video: true }).then((mediaStream) => {
+        this.cameraStart = true;
+        this.$refs.videoplay.srcObject = mediaStream;
+        this.track = mediaStream.getVideoTracks()[0];
+        this.imageCapture = new ImageCapture(this.track)
+      })
+    },
 
-  takePhoto() {
-    //   this.imageCapture
-    //     .takePhoto()
-    //     .then((blob) => {
-    // 				this.photoID = uuidv4()
-    //       createImageBitmap(blob)
-    //       const reader = new FileReader()
-    //       reader.readAsDataURL(blob)
-    //       reader.onloadend = () => {
-    //         this.$refs.imgTakePhoto.src = reader.result
-    //         this.cameraFinish = true
-    //         this.upload(reader.result)
-    //       }
-    //     })
-    //     .catch((error) => console.log('takePhoto_error'))
-  },
+    takePhoto() {
+      this.imageCapture.takePhoto().then((blob) => {
+        this.photoID = uuidv4()
+        createImageBitmap(blob)
+        const reader = new FileReader()
+        reader.readAsDataURL(blob)
+        reader.onloadend = () => {
+          this.$refs.imgTakePhoto.src = reader.result
+          this.cameraFinish = true
+          this.upload(reader.result)
+        }
+      }).catch((error) => console.log('takePhoto_error'))
+    },
 
-  upload(result) {
-    //   var t = this
-    //   let ref = db.storage().ref().child(this.photoID)
-    //   ref.putString(result, "data_url").then(function (snapshot) {
-    //     snapshot.ref.getDownloadURL().then((url) => {
-    //       t.photoID = url
-    //     })
-    //   })
-  },
+    upload(result) {
+      var t = this
+      let ref = db.storage().ref().child(this.photoID)
+      ref.putString(result, "data_url").then(function (snapshot) {
+        t.$emit('setPhotoId',t.photoID);
+      })
+    },
 
-  sair() {
-    this.$router.go("/clientes")
-  },
+    sair() {
+      this.$router.go("/clientes")
+    },
 
-})
+  }
+}
 </script>
 
 <style scoped>

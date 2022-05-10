@@ -29,7 +29,7 @@
               icon="camera_enhance"
               label="TIRAR FOTO"
             />
-            <Camera v-if="cameraShow" />
+            <Camera v-if="cameraShow" @set-photo-id="setPhotoId" />
             <FileUpload v-if="uploadShow" @set-file="setFile" />
           </div>
         </div>
@@ -45,7 +45,6 @@
 
         <q-input
           v-model.number="price"
-          
           mask="#.##"
           fill-mask="0"
           reverse-fill-mask
@@ -82,102 +81,62 @@ export default defineComponent({
   name: "AddProduct",
   components: { Camera, FileUpload },
   props: {},
-
   data() {
     return {
       name: "",
       price: 0.0,
       file: "",
-
       cameraShow: false,
       uploadShow: false,
-      // enableCamera: false,
-      // cameraStart: false,
-      // cameraFinish: false,
-      // imageCapture: null,
-      // track: null,
-      // name: "",
-      // nick: "",
-      // useNick: false,
-      // photoID: null,
     };
   },
-
+  
   mounted() {
-    // if (navigator.mediaDevices.getUserMedia) {
-    //   this.enableCamera = true
-    // }
   },
 
   methods: {
     onSubmit() {
       let a = db;
       let b = db;
-      var imgName = uuidv4();
-      const storageRef = a.storage().ref(imgName).put(this.file);
-      storageRef.on(`state_changed`, (snapshot) => {
-        b.firestore()
-          .collection("products")
-          .doc()
-          .set({
+      if (this.file){
+        let imgName = uuidv4();
+        const storageRef = a.storage().ref(imgName).put(this.file);
+        storageRef.on(`state_changed`, (snapshot) => {
+          b.firestore().collection("products").doc().set({
             name: this.name,
             price: this.price,
             img: imgName,
-          })
-          .then(() => {
+          }).then(() => {
             this.$router.go("/products");
-          })
-          .catch((error) => {
+          }).catch((error) => {
             console.error("onsubmit_error");
           });
-      });
+        });
+      }else{
+        a.firestore().collection("products").doc().set({
+          name: this.name,
+          price: this.price,
+          img: this.photoID,
+        }).then(() => {
+          this.$router.go("/products");
+        }).catch((error) => {
+          console.error("onsubmit_error");
+        });
+      }
+    },
+
+    setPhotoId(photoId){
+      this.photoID = photoId
     },
 
     setFile(file) {
       this.file = file;
     },
 
-    useCamera() {
-      //   navigator.mediaDevices
-      //     .getUserMedia({ video: true })
-      //     .then((mediaStream) => {
-      //       this.cameraStart = true;
-      //       this.$refs.videoplay.srcObject = mediaStream;
-      //       this.track = mediaStream.getVideoTracks()[0];
-      //       this.imageCapture = new ImageCapture(this.track)
-      //     })
-    },
-
-    takePhoto() {
-      //   this.imageCapture
-      //     .takePhoto()
-      //     .then((blob) => {
-      // 				this.photoID = uuidv4()
-      //       createImageBitmap(blob)
-      //       const reader = new FileReader()
-      //       reader.readAsDataURL(blob)
-      //       reader.onloadend = () => {
-      //         this.$refs.imgTakePhoto.src = reader.result
-      //         this.cameraFinish = true
-      //         this.upload(reader.result)
-      //       }
-      //     })
-      //     .catch((error) => console.log('takePhoto_error'))
-    },
-
-    //upload(result) {
-    //   var t = this
-    //   let ref = db.storage().ref().child(this.photoID)
-    //   ref.putString(result, "data_url").then(function (snapshot) {
-    //     snapshot.ref.getDownloadURL().then((url) => {
-    //       t.photoID = url
-    //     })
-    //   })
-    //},
-
-    sair() {
+    sair(){
       this.$router.go("/clientes");
     },
+
   },
 });
 </script>
@@ -189,7 +148,6 @@ export default defineComponent({
   margin-right: auto;
   width: 160px;
 }
-
 #camera-avatar {
   display: block;
   margin-left: auto;

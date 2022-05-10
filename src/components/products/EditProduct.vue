@@ -45,7 +45,6 @@
 
         <q-input
           v-model.number="price"
-          
           mask="#.##"
           fill-mask="0"
           reverse-fill-mask
@@ -83,58 +82,55 @@ export default defineComponent({
   components: { Camera, FileUpload },
   props: {editProductInfo:Object},
 
-  data(props) {
-    return {
-      name: props.editProductInfo['nome'],
-      price: props.editProductInfo['price'],
-      file: "",
-
-      cameraShow: false,
-      uploadShow: false,
-    };
-  },
-
-  mounted() {
-  },
-
-  methods: {
-    onSubmit() {
-      let a = db;
-      let b = db;
-      var imgName = uuidv4();
-      const storageRef = a.storage().ref(imgName).put(this.file);
-      storageRef.on(`state_changed`, (snapshot) => {
-        b.firestore()
-          .collection("products")
-          .doc()
-          .set({
-            name: this.name,
-            price: this.price,
-            img: imgName,
-          })
-          .then(() => {
-            this.$router.go("/products");
-          })
-          .catch((error) => {
-            console.error("onsubmit_error");
-          });
-      });
+    data(props) {
+        return {
+            name: props.editProductInfo['nome'],
+            price: props.editProductInfo['price'],
+            file: "",
+            cameraShow: false,
+            uploadShow: false,
+            enableCamera: false,
+            cameraStart: false,
+            cameraFinish: false,
+            imageCapture: null,
+            track: null,
+            photoID: null,
+        };
     },
 
-    setFile(file) {
-      this.file = file;
-    },
+    mounted() {},
 
-    useCamera() {
-    },
+    methods: {
+        onSubmit() {
+            let a = db;
+            let b = db;
+            var imgName = uuidv4();
+            const storageRef = a.storage().ref(imgName).put(this.file);
+            storageRef.on(`state_changed`, (snapshot) => {
+                b.firestore().collection("products").doc().set({
+                    name: this.name,
+                    price: this.price,
+                    img: imgName,
+                }).then(() => {
+                    this.$router.go("/products");
+                }).catch((error) => {
+                    console.error("onsubmit_error");
+                });
+            });
+        },
 
-    takePhoto() {
-    },
+        setFile(file) {
+            this.file = file;
+        },
 
-    sair() {
-      this.$router.go("/clientes");
+        useCamera() {},
+
+        takePhoto() {},
+
+        sair() {
+            this.$router.go("/clientes");
+        },
     },
-  },
 });
 </script>
 

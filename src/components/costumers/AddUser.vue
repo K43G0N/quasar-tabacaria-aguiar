@@ -35,7 +35,7 @@
     </div>
   </div>
 
-  <div class="q-pa-md" style="max-width: 400px;margin: 0 auto;">
+  <div class="q-pa-md" style="max-width: 400px; margin: 0 auto">
     <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
       <q-input
         filled
@@ -45,14 +45,14 @@
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'digite algum nome']"
       />
-			<q-input
+      <q-input
         filled
         v-model="nick"
         label="Apelido"
         hint="apelido"
         lazy-rules
       />
-			
+
       <q-toggle v-model="useNick" label="usar o aplido do kara?" />
 
       <div>
@@ -68,13 +68,12 @@
       </div>
     </q-form>
   </div>
-
 </template>
 
 <script>
-import { defineComponent } from "vue"
-import db from "src/boot/firebase"
-import { v4 as uuidv4 } from 'uuid';
+import { defineComponent } from "vue";
+import db from "src/boot/firebase";
+import { v4 as uuidv4 } from "uuid";
 
 export default defineComponent({
   name: "AddUser",
@@ -87,33 +86,37 @@ export default defineComponent({
       cameraFinish: false,
       imageCapture: null,
       track: null,
-			name:'',
-			nick:'',
-			useNick:false,
-			photoID:null
+      name: "",
+      nick: "",
+      useNick: false,
+      photoID: null,
     };
   },
 
   mounted() {
     if (navigator.mediaDevices.getUserMedia) {
-      this.enableCamera = true
+      this.enableCamera = true;
     }
   },
 
   methods: {
-
-		onSubmit(){
-      db.firestore().collection("costumers").doc().set({
-      	name: this.name,
-				nick: this.nick,
-        use_nick: this.useNick,
-        photo_id: this.photoID
-      }).then(() => {
-				this.$router.go('/clientes')
-      }).catch((error) => {
-      	console.error('onsubmit_error')
-      })
-		},
+    onSubmit() {
+      db.firestore()
+        .collection("costumers")
+        .doc()
+        .set({
+          name: this.name,
+          nick: this.nick,
+          use_nick: this.useNick,
+          photo_id: this.photoID,
+        })
+        .then(() => {
+          this.$router.go("/clientes");
+        })
+        .catch((error) => {
+          console.error("onsubmit_error");
+        });
+    },
 
     useCamera() {
       navigator.mediaDevices
@@ -122,44 +125,42 @@ export default defineComponent({
           this.cameraStart = true;
           this.$refs.videoplay.srcObject = mediaStream;
           this.track = mediaStream.getVideoTracks()[0];
-          this.imageCapture = new ImageCapture(this.track)
-        })
+          this.imageCapture = new ImageCapture(this.track);
+        });
     },
 
     takePhoto() {
       this.imageCapture
         .takePhoto()
         .then((blob) => {
-					this.photoID = uuidv4()
-          createImageBitmap(blob)
-          const reader = new FileReader()
-          reader.readAsDataURL(blob)
+          this.photoID = uuidv4();
+          createImageBitmap(blob);
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
           reader.onloadend = () => {
-            this.$refs.imgTakePhoto.src = reader.result
-            this.cameraFinish = true
-            this.upload(reader.result)
-          }
+            this.$refs.imgTakePhoto.src = reader.result;
+            this.cameraFinish = true;
+            this.upload(reader.result);
+          };
         })
-        .catch((error) => console.log('takePhoto_error'))
+        .catch((error) => console.log("takePhoto_error"));
     },
 
     upload(result) {
-      var t = this
-      let ref = db.storage().ref().child(this.photoID)
+      var t = this;
+      let ref = db.storage().ref().child(this.photoID);
       ref.putString(result, "data_url").then(function (snapshot) {
         snapshot.ref.getDownloadURL().then((url) => {
-          t.photoID = url
-        })
-      })
+          t.photoID = url;
+        });
+      });
     },
 
-    sair(){
-      this.$router.go('/clientes')
-    }
-
-	},
-
-})
+    sair() {
+      this.$router.go("/clientes");
+    },
+  },
+});
 </script>
 
 <style scoped>
